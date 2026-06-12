@@ -24,20 +24,17 @@ class SocialAccountManagerApp extends StatelessWidget {
         ),
         cardTheme: CardTheme(
           elevation: 2,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
           ),
         ),
@@ -53,20 +50,17 @@ class SocialAccountManagerApp extends StatelessWidget {
         ),
         cardTheme: CardTheme(
           elevation: 2,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
           ),
         ),
@@ -354,8 +348,7 @@ class _AccountListPageState extends State<AccountListPage> {
                                       color: Theme.of(context).colorScheme.error,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    child: const Icon(Icons.delete,
-                                        color: Colors.white),
+                                    child: const Icon(Icons.delete, color: Colors.white),
                                   ),
                                   confirmDismiss: (direction) async {
                                     _deleteAccount(index);
@@ -365,8 +358,7 @@ class _AccountListPageState extends State<AccountListPage> {
                                     email: account['email'] ?? '',
                                     password: account['password'] ?? '',
                                     key2FA: account['key2FA'] ?? '',
-                                    onEdit: () =>
-                                        _addOrEditAccount(index: index),
+                                    onEdit: () => _addOrEditAccount(index: index),
                                     onDelete: () => _deleteAccount(index),
                                   ),
                                 ),
@@ -423,10 +415,8 @@ class _AccountCardState extends State<_AccountCard> {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor:
-                      colorScheme.primaryContainer,
-                  child: const Icon(Icons.account_circle,
-                      color: Colors.white),
+                  backgroundColor: colorScheme.primaryContainer,
+                  child: const Icon(Icons.account_circle, color: Colors.white),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -442,9 +432,7 @@ class _AccountCardState extends State<_AccountCard> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        _showPassword
-                            ? widget.password
-                            : '••••••••',
+                        _showPassword ? widget.password : '••••••••',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: colorScheme.onSurface.withOpacity(0.7),
                               letterSpacing: 1.5,
@@ -455,22 +443,17 @@ class _AccountCardState extends State<_AccountCard> {
                 ),
                 IconButton(
                   icon: Icon(
-                    _showPassword
-                        ? Icons.visibility_off
-                        : Icons.visibility,
+                    _showPassword ? Icons.visibility_off : Icons.visibility,
                     color: colorScheme.primary,
                   ),
-                  onPressed: () {
-                    setState(() => _showPassword = !_showPassword);
-                  },
+                  onPressed: () => setState(() => _showPassword = !_showPassword),
                 ),
               ],
             ),
             if (widget.key2FA.isNotEmpty) ...[
               const SizedBox(height: 8),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: colorScheme.secondaryContainer,
                   borderRadius: BorderRadius.circular(8),
@@ -506,10 +489,8 @@ class _AccountCardState extends State<_AccountCard> {
                 const SizedBox(width: 8),
                 TextButton.icon(
                   onPressed: widget.onDelete,
-                  icon: Icon(Icons.delete_outline,
-                      size: 18, color: colorScheme.error),
-                  label: Text('Hapus',
-                      style: TextStyle(color: colorScheme.error)),
+                  icon: Icon(Icons.delete_outline, size: 18, color: colorScheme.error),
+                  label: Text('Hapus', style: TextStyle(color: colorScheme.error)),
                 ),
               ],
             ),
