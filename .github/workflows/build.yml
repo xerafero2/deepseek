@@ -17,22 +17,27 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      # Backup file asli dari repositori
+      # Backup file asli dari repositori agar tidak ditimpa oleh flutter create
       - name: Backup original files
         run: |
           mkdir -p backup
           cp lib/main.dart backup/main.dart
           cp pubspec.yaml backup/pubspec.yaml
 
-      # Buat proyek Flutter lengkap (akan menimpa file yang ada)
+      # Buat proyek Flutter lengkap (folder android/, ios/, dll.)
       - name: Create Flutter project
         run: flutter create --project-name social_account_manager .
 
-      # Kembalikan file asli untuk menimpa template default
+      # Kembalikan file asli aplikasi
       - name: Restore original files
         run: |
           cp -f backup/main.dart lib/main.dart
           cp -f backup/pubspec.yaml pubspec.yaml
+
+      # Perbaiki versi Kotlin agar kompatibel dengan AGP 8.1.0
+      - name: Fix Kotlin version
+        run: |
+          sed -i 's/version "1.8.22"/version "1.9.22"/' android/settings.gradle
 
       - run: flutter pub get
       - run: flutter build apk --release
