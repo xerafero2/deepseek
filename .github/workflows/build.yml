@@ -1,20 +1,54 @@
-name: social_account_manager
-description: Aplikasi penyimpan akun sosial media - Flutter.
-publish_to: 'none'
-version: 1.0.0+1
+name: Build Android APK
 
-environment:
-  sdk: '>=3.0.0 <4.0.0'
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-dependencies:
-  flutter:
-    sdk: flutter
-  shared_preferences: ^2.2.0
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^2.0.0
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
 
-flutter:
-  uses-material-design: true
+      # Backup file asli dari repositori
+      - name: Backup original files
+        run: |
+          mkdir -p backup
+          cp lib/main.dart backup/main.dart
+          cp pubspec.yaml backup/pubspec.yaml
+
+      # Buat proyek Flutter lengkap (folder android/, ios/, dll.)
+      - name: Create Flutter project
+        run: flutter create --project-name social_account_manager .
+
+      # Kembalikan file asli aplikasi
+      - name: Restore original files
+        run: |
+          cp -f backup/main.dart lib/main.dart
+          cp -f backup/pubspec.yaml pubspec.yaml
+
+      # Perbaiki versi Kotlin ke 1.9.24 (HANYA plugin Kotlin)
+      - name: Fix Kotlin version
+        run: |
+          echo "=== BEFORE FIX ==="
+          cat android/settings.gradle
+          sed -i 's/id "org.jetbrains.kotlin.android" version "[^"]*"/id "org.jetbrains.kotlin.android" version "1.9.24"/' android/settings.gradle
+          sed -i 's/ext.kotlin_version = "[^"]*"/ext.kotlin_version = "1.9.24"/' android/build.gradle
+          echo "=== AFTER FIX ==="
+          cat android/settings.gradle
+          cat android/build.gradle
+
+      - run: flutter pub get
+      - run: flutter build apk --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
