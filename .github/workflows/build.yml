@@ -17,12 +17,22 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      # Buat proyek Flutter kosong, lalu timpa dengan file dari repo
-      - name: Prepare Flutter project
+      # Backup file asli dari repositori
+      - name: Backup original files
         run: |
-          flutter create --project-name social_account_manager .
-          cp -f lib/main.dart lib/main.dart
-          cp -f pubspec.yaml pubspec.yaml
+          mkdir -p backup
+          cp lib/main.dart backup/main.dart
+          cp pubspec.yaml backup/pubspec.yaml
+
+      # Buat proyek Flutter lengkap (akan menimpa file yang ada)
+      - name: Create Flutter project
+        run: flutter create --project-name social_account_manager .
+
+      # Kembalikan file asli untuk menimpa template default
+      - name: Restore original files
+        run: |
+          cp -f backup/main.dart lib/main.dart
+          cp -f backup/pubspec.yaml pubspec.yaml
 
       - run: flutter pub get
       - run: flutter build apk --release
