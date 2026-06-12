@@ -1,56 +1,20 @@
-name: Build Android APK
+name: social_account_manager
+description: Aplikasi penyimpan akun sosial media - Flutter.
+publish_to: 'none'
+version: 1.0.0+1
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+environment:
+  sdk: '>=3.0.0 <4.0.0'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.2.0
 
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.0'
-          channel: 'stable'
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
 
-      # Backup file asli
-      - name: Backup original files
-        run: |
-          mkdir -p backup
-          cp lib/main.dart backup/main.dart
-          cp pubspec.yaml backup/pubspec.yaml
-
-      # Buat proyek Flutter (ini akan menimpa semua kecuali yang sudah ada)
-      - name: Create Flutter project
-        run: flutter create --project-name social_account_manager .
-
-      # Kembalikan file asli
-      - name: Restore original files
-        run: |
-          cp -f backup/main.dart lib/main.dart
-          cp -f backup/pubspec.yaml pubspec.yaml
-
-      # Perbaiki Kotlin versi terbaru (1.9.24) untuk Flutter 3.24
-      - name: Fix Kotlin version
-        run: |
-          echo "=== BEFORE FIX ==="
-          cat android/settings.gradle
-          # Ganti semua kemunculan version "x.y.z" dengan "1.9.24"
-          sed -i 's/version "[^"]*"/version "1.9.24"/g' android/settings.gradle
-          # Jika ada ext.kotlin_version di build.gradle
-          sed -i 's/ext.kotlin_version = "[^"]*"/ext.kotlin_version = "1.9.24"/g' android/build.gradle
-          echo "=== AFTER FIX ==="
-          cat android/settings.gradle
-          cat android/build.gradle
-
-      - run: flutter pub get
-      - run: flutter build apk --release
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+flutter:
+  uses-material-design: true
